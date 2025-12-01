@@ -2,7 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
+// Load AppModule at runtime to avoid TypeScript requiring its declaration file
+const AppModule: any = require('../src/app.module').AppModule;
 
 describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
