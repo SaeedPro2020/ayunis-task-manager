@@ -57,42 +57,116 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+# Task Manager Backend – Clean Architecture (NestJS)
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+This project implements a small Task Manager backend as part of a technical interview assignment.  
+The focus is **architecture, structure, and reasoning**, not feature quantity.
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+---
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🚀 Tech Stack
+- **NestJS** (as framework/infrastructure)
+- **TypeScript**
+- **Clean Architecture / Hexagonal Architecture**
+- **In-memory repository** (for speed, simplicity)
+- **Jest** for testing
 
-## Resources
+---
 
-Check out a few resources that may come in handy when working with NestJS:
+## 🧱 Architecture Overview
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+The codebase follows a **Clean Architecture** approach, separating the system into distinct layers:
 
-## Support
+- src/
+- domain/ ← Enterprise business rules
+- application/ ← Use cases (application business rules)
+- infrastructure/ ← NestJS controllers, modules, repository adapters
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
+### **Domain Layer**
+- Contains **entities** and **repository interfaces (ports)**.
+- Pure TypeScript.
+- No NestJS imports.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### **Application Layer**
+- Contains **use cases** and **DTOs**.
+- Implements business logic by depending only on domain interfaces.
+- No framework code.
 
-## License
+### **Infrastructure Layer**
+- Uses NestJS to expose HTTP routes.
+- Contains controllers, modules, and repository adapters.
+- Wires use cases through dependency injection.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This structure makes the system:
+- Testable  
+- Maintainable  
+- Scalable  
+- Framework-independent  
+
+---
+
+## 🗂 Folder Structure (Simplified)
+
+    src/
+    domain/
+    entities/
+    repositories/
+    application/
+    dto/
+    use-cases/
+    infrastructure/
+    nest/
+    controllers/
+    modules/
+    repositories/
+
+
+
+---
+
+## 🧪 Testing Strategy
+
+For demonstration, one example test is included:
+- `CreateTaskUseCase` unit test  
+- Tests only business logic (no NestJS)
+
+Additional test categories I would add with more time:
+- Controller integration tests
+- Repository tests with a real DB
+- More domain validation tests
+
+---
+
+## 📌 Assumptions
+- In-memory repository is acceptable for the assignment.
+- No authentication required.
+- Minimal validation for tasks.
+- No persistence required (can be added in infrastructure layer).
+
+---
+
+## 💡 What I Would Add With More Time
+
+- PostgreSQL repository implementation
+- Domain validation rules
+- Error handling middleware / exception filters
+- Swagger/OpenAPI documentation
+- Additional task filters (status, date)
+- Person management module
+- E2E tests for full API behavior
+
+---
+
+## 🏁 Summary
+
+This project demonstrates:
+- Clean Architecture
+- NestJS idiomatic structure
+- Clear layering and dependency flow
+- Practical, maintainable code
+- A modular design that scales
+
+The structure reflects what I would build for a production backend where long-term maintainability matters.
+
